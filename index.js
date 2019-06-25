@@ -10,7 +10,7 @@ const asyncAnalyze = (url) => {
 const runMe = async () => {
 
     const listOfPromises = []
-    const listOfURL= ['https://www.protractortest.org/#/infrastructure']
+    const listOfURL= ['https://www.protractortest.org/#/infrastructure', 'https://www.npmjs.com/package/chromedriver/v/2.46.0', 'http://anahorny.blogspot.com/2013/04/using-queryselector-in-selenium.html' ]
     listOfURL.map(e => {
         listOfPromises.push(asyncAnalyze(e))
     })
