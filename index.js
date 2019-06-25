@@ -1,6 +1,5 @@
 const Page = require('./lib/page')
 
-const validateUrl
 const scanPage = async (page) => {
     const htmlPage = { meta: [], paragraph: []}
     const metaTags = await page.findByTagName('meta')
