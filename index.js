@@ -1,7 +1,7 @@
 const Page = require('./lib/page')
 
 const scanPage = async (page) => {
-    const htmlPage = { meta: [], paragraph: []}
+    const htmlPage = { meta: [], text: []}
     const metaTags = await page.findByTagName('meta')
     if (metaTags &&
         metaTags.length) {
@@ -15,21 +15,36 @@ const scanPage = async (page) => {
         }
     }
     const pTags = await page.findByTagName('p')
-    if (pTags &&
-        pTags.length) {
-        for (let i = 0; i < pTags.length; i++) {
-            htmlPage.meta.push(await pTags[i].getAttribute('innerText'))
+    const divTags = await page.findByTagName('div')
+    const spanTags = await page.findByTagName('span')
+    const contentTextTags = [].concat(pTags, divTags, spanTags)
+    if (contentTextTags &&
+        contentTextTags.length) {
+        for (let i = 0; i < contentTextTags.length; i++) {
+            try {
+                const text = await contentTextTags[i].getAttribute('innerText')
+                if (text.length > 0) {
+
+                    htmlPage.text.push(text)
+                }
+            } catch (e) {
+                console.error(e)
+            }
         }
     }
     return htmlPage
 }
 const runMe = async () => {
     const page = new Page()
-    await page.visit('https://www.w3schools.com/')
+    const url = 'https://www.protractortest.org/#/infrastructure'
+    await page.visit(url)
+    await page.removeAllScript()
     try {
        const htmlPage = await scanPage(page)
-
-        console.log('htmlPage: ', htmlPage)
+        htmlPage.url = url
+        const screenShot = await page.takeScreenShot()
+        htmlPage.screenShot = screenShot
+        console.log('htmlPage: ', JSON.stringify([htmlPage]))
     } catch (e) {
         console.error(e)
     }
