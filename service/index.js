@@ -44,10 +44,10 @@ const analyzePage = async (url) => {
         htmlPage = await scanPage(page)
         htmlPage.url = url
         const screenShot = await page.takeScreenShot()
-        htmlPage.screenShot = screenShot
-        console.log('htmlPage: ', JSON.stringify([htmlPage]))
+        // htmlPage.screenShot = screenShot
+        // console.log('htmlPage: ', JSON.stringify([htmlPage]))
     } catch (e) {
-        console.error(e)
+        // console.error(e)
     }
     await page.quit()
     return htmlPage
